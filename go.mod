@@ -1,4 +1,4 @@
-module main
+module lab.overpass.co.kr/aws/ncloud-deployer
 
 go 1.22.1
 
