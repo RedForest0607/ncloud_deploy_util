@@ -1,0 +1,18 @@
+# NCLOUD에서 STRANGER 배포 시 사용할 수 있는 유틸 입니다.
+
+GO를 통해서 실행시키는 샘플입니다  
+`TARGET_GROUP_NO="1234567" TARGET_NAME="prod-hamonica-node" BEHAVIOR="ADD" go run ./main.go`
+
+### 빌드
+`go build main.go`  
+
+### 환경변수  
+`TARGET_GROUP_NO` : 로드밸런서에서 삭제할 타겟이 존재하는 그룹의 번호 입니다.  
+`TARGET_NAME` : 삭제할 인스턴스의 이름입니다  
+`BEHAVIOR` : 동작을 정의합니다.  
+- `REMOVE` : 인스턴스를 타겟그룹에 삭제됩니다  
+- `ADD` : 인스턴스를 타겟그룹에 추가됩니다  
+
+
+### 주의점  
+네이버 API를 통해서는 일반적인 방법으로 인스턴스의 타겟번호를 알아내기 어렵습니다. 그래서 이 유틸리티도 `삭제 후 추가`로 진행한다는 가정하에 작동합니다. data 폴더에 생성되는 json파일에서 타겟 번호를 알아내기 때문에, 해당 파일 내용 없이 `REMOVE`동작이 동작하지 않습니다.
