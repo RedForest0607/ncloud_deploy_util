@@ -23,7 +23,6 @@ func WriteJsonFile(targetNo string) {
 	data := make([]TargetNo, 1)
 	data[0].TargetNo = targetNo
 
-	println(data)
 	doc, _ := json.Marshal(data)
 
 	err := os.WriteFile(logFilePath, doc, os.FileMode(0644))

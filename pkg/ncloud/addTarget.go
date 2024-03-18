@@ -25,6 +25,7 @@ func AddTarget(targetNo, targetGroupNo string) *string {
 
 	if r, err := client.V2Api.AddTarget(&addReq); err != nil {
 		util.WriteLogToFile(err.Error())
+		println("ERR")
 	} else {
 		util.WriteLogToFile(ncloud.StringValue(r.RequestId))
 		util.WriteLogToFile(ncloud.StringValue(r.ReturnCode))

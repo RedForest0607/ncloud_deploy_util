@@ -130,6 +130,9 @@ func SendTargetNoRequest(targetName, targetGroupNo string) string {
     util.WriteLogToFile("\n######## REQUEST TARGET LIST ###########")
 	apiKeys := ncloud.Keys()
 	result := GetTargetNo(targetName, targetGroupNo, apiKeys)
+    if result == "error" {
+        println("ERR")
+    }
 	util.WriteLogToFile(result)
 
     return result
