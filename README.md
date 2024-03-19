@@ -1,5 +1,14 @@
 # NCLOUD에서 STRANGER 배포 시 사용할 수 있는 유틸 입니다.
 
+### 환경설정  
+`~/.ncloud/configure`  
+위의 경로에 해당하는 `configure`설정파일을 생성하고 아래의 내용을 작성해 주어야 합니다.  
+```
+ncloud_access_key_id={네이버 클라우드에서 받은 값}
+ncloud_secret_access_ke={네이버 클라우드에서 받은 값}
+```  
+네이버 클라우드 측에서는 대문자로 샘플을 게시해뒀지만 소문자로 해야 정상적으로 동작합니다  
+  
 GO를 통해서 실행시키는 샘플입니다  
 `TARGET_GROUP_NO="1234567" TARGET_NAME="prod-hamonica-node" BEHAVIOR="ADD" go run ./main.go`  
 바이너리 파일을 통해서 실행시키는 샘플입니다  
