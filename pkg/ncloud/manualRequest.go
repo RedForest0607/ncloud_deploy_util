@@ -92,7 +92,7 @@ func GetTargetNo(targetName,targetGroupNo string, apiKey *ncloud.APIKey) string 
     // HTTP 요청 생성
     req, err := http.NewRequest("GET", url, nil)
     if err != nil {
-        return "error"
+        return ""
     }
 
     // 생성한 헤더 설정
@@ -104,14 +104,14 @@ func GetTargetNo(targetName,targetGroupNo string, apiKey *ncloud.APIKey) string 
     // 요청 보내기
     resp, err := client.Do(req)
     if err != nil {
-        return "error"
+        return ""
     }
     defer resp.Body.Close()
 
     // 응답 읽기
     body, err := io.ReadAll(resp.Body)
     if err != nil {
-        return "error"
+        return ""
     }
 
     // 응답 결과 변환
@@ -122,7 +122,7 @@ func GetTargetNo(targetName,targetGroupNo string, apiKey *ncloud.APIKey) string 
         return targetNo
     }
     util.WriteLogToFile(string(body))
-    return "not_found"
+    return ""
 }
 
 func SendTargetNoRequest(targetName, targetGroupNo string) string {
