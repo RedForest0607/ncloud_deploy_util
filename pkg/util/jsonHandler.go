@@ -6,33 +6,50 @@ import (
 	"os"
 )
 
-type TargetNo struct {
-	TargetNo string `json:"targetNo"`
-}
+func WriteJsonFile(targetName, targetNo string) {
 
-func WriteJsonFile(targetNo string) {
+	var jsonData map[string]interface{}
 	logFolderPath := "./data"
 	logFilePath := fmt.Sprintf("%s/target_no.json", logFolderPath)
 	if _, err := os.Stat(logFolderPath); os.IsNotExist(err) {
-		os.MkdirAll(logFolderPath,0777)
+		os.MkdirAll(logFolderPath, 0777)
 	}
 
+	// 파일 존재 여부 확인
 	if _, err := os.Stat(logFilePath); os.IsNotExist(err) {
-		os.Create(logFilePath)
+		// 파일이 존재하지 않으면 새로운 맵 생성
+		jsonData = make(map[string]interface{})
+	} else {
+		// 파일이 존재하면 파일 읽기
+		data, err := os.ReadFile(logFilePath)
+		if err != nil {
+			WriteLogToFile(err.Error())
+			return
+		}
+
+		// JSON 데이터 언마샬링
+		if err := json.Unmarshal(data, &jsonData); err != nil {
+			WriteLogToFile(err.Error())
+			return
+		}
 	}
-	data := make([]TargetNo, 1)
-	data[0].TargetNo = targetNo
 
-	doc, _ := json.Marshal(data)
+	jsonData[targetName] = targetNo
 
-	err := os.WriteFile(logFilePath, doc, os.FileMode(0644))
+	jsonBytes, err := json.MarshalIndent(jsonData, "", "  ")
+	if err != nil {
+		WriteLogToFile(err.Error())
+		return
+	}
+
+	err = os.WriteFile(logFilePath, jsonBytes, os.FileMode(0644))
 	if err != nil {
 		WriteLogToFile(err.Error())
 		return
 	}
 }
 
-func ParseJsonFile() string {
+func ParseJsonFile(targetName string) string {
 	// JSON 파일 읽기
 	file, err := os.ReadFile("./data/target_no.json")
 	if err != nil {
@@ -40,18 +57,17 @@ func ParseJsonFile() string {
 		panic(err)
 	}
 
-	// JSON 데이터 파싱하여 구조체에 저장
-	var data []TargetNo
-	err = json.Unmarshal(file, &data)
-	if err != nil {
-		WriteLogToFile("JSON 데이터 파싱 도중 에러 발생:" + err.Error())
+	var jsonData map[string]interface{}
+	if err := json.Unmarshal(file, &jsonData); err != nil {
+		WriteLogToFile("파일을 읽는 도중 에러 발생:" + err.Error())
 		panic(err)
 	}
 
 	// 파싱된 데이터 사용 예시
-	for _, item := range data {
-		WriteLogToFile("TargetNo:" + item.TargetNo)
-		return item.TargetNo
+	value, exists := jsonData[targetName]
+	if exists {
+		return value.(string)
+	} else {
+		return ""
 	}
-	return ""
 }
