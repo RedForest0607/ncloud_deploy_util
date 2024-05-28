@@ -1,7 +1,6 @@
 package ncloud
 
 import (
-
 	"github.com/NaverCloudPlatform/ncloud-sdk-go-v2/ncloud"
 	"github.com/NaverCloudPlatform/ncloud-sdk-go-v2/services/vloadbalancer"
 	"lab.overpass.co.kr/aws/ncloud-deployer/pkg/util"
@@ -14,13 +13,13 @@ func AddTarget(targetNo, targetGroupNo string) *string {
 	apiKeys := ncloud.Keys()
 	client := vloadbalancer.NewAPIClient(vloadbalancer.NewConfiguration(apiKeys))
 
-    var targetNoList []string
-    targetNoList = append (targetNoList, targetNo)
+	var targetNoList []string
+	targetNoList = append(targetNoList, targetNo)
 
-	util.WriteLogToFile("\n######## ADD TARGET ###########")
+	util.WriteLogToFile("타겟 추가 요청")
 	addReq := vloadbalancer.AddTargetRequest{
 		TargetGroupNo: ncloud.String(targetGroupNo),
-		TargetNoList: ncloud.StringList(targetNoList),
+		TargetNoList:  ncloud.StringList(targetNoList),
 	}
 
 	if r, err := client.V2Api.AddTarget(&addReq); err != nil {
